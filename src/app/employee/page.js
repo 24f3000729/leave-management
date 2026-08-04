@@ -1,7 +1,7 @@
 export default function Page() {
   return (
     <div>
-      <h1>Login</h1>
+      <h1>Employee Dashboard</h1>
     </div>
   );
 }
