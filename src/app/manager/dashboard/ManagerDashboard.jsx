@@ -4,6 +4,10 @@ import { Users, CalendarDays, Clock, CheckCircle2 } from "lucide-react";
 import StatCard from "@/components/manager/StatCard";
 import LeaveAnalyticsChart from "@/components/employee/LeaveAnalyticsChart";
 import { TopHeader } from "@/components/manager/TopHeader";
+import LeaveByTypeChart from "@/components/manager/LeaveByTypeChart";
+import PendingApprovalsTable from "@/components/manager/PendingApprovalsTable";
+import TodaysStatus from "@/components/manager/TodaysStatus";
+import RecentActivities from "@/components/manager/RecentActivities";
 
 export default function ManagerDashboard() {
   const navigate = useRouter();
@@ -11,7 +15,7 @@ export default function ManagerDashboard() {
   return (
     <>
       <div>
-        <TopHeader/>
+        <TopHeader />
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 space-y-6 mx-auto mt-5" >
         <StatCard
@@ -52,10 +56,22 @@ export default function ManagerDashboard() {
         />
       </div>
 
-      <div className="space-y-6 pt-7">
-        <LeaveAnalyticsChart />
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 pt-7">
+        {/* Left Column - Leave Overview & Pending Approvals */}
+        <div className="lg:col-span-2 space-y-6">
+          <LeaveAnalyticsChart />
+          <PendingApprovalsTable />
+        </div>
+
+        {/* Right Column - Leave by Type, Today's Status, Recent Activities */}
+        <div className="lg:col-span-1 space-y-6">
+          <LeaveByTypeChart />
+          <TodaysStatus />
+          <RecentActivities />
+        </div>
       </div>
     </>
 
   );
 }
+
