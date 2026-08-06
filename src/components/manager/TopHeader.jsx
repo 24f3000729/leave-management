@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { addDays, format } from "date-fns";
+import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
 
 import { Calendar } from "@/components/ui/calendar";
@@ -12,13 +12,8 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 
-export function TopHeader() {
+export function TopHeader({ dateRange, onDateRangeChange }) {
   const [open, setOpen] = useState(false);
-
-  const [dateRange, setDateRange] = useState({
-    from: new Date(new Date().getFullYear(), 0, 12),
-    to: addDays(new Date(new Date().getFullYear(), 0, 12), 30),
-  });
 
   return (
     <div className="flex w-full justify-between">
@@ -42,14 +37,14 @@ export function TopHeader() {
           </Button>
         </PopoverTrigger>
 
-        <PopoverContent className="w-auto p-0">
+        <PopoverContent className="w-auto p-0 animate-fade-in z-50">
           <Calendar
             mode="range"
             defaultMonth={dateRange.from}
             selected={dateRange}
             numberOfMonths={2}
             onSelect={(range) => {
-              setDateRange(range);
+              onDateRangeChange(range);
 
               if (range?.from && range?.to) {
                 setOpen(false);

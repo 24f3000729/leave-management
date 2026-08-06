@@ -17,73 +17,20 @@ import {
     CardTitle,
 } from "@/components/ui/card";
 
-const data = [
-    {
-        date: "May 12",
-        approved: 35,
-        pending: 18,
-        rejected: 8,
-    },
-    {
-        date: "May 13",
-        approved: 58,
-        pending: 28,
-        rejected: 12,
-    },
-    {
-        date: "May 14",
-        approved: 62,
-        pending: 30,
-        rejected: 10,
-    },
-    {
-        date: "May 15",
-        approved: 48,
-        pending: 22,
-        rejected: 9,
-    },
-    {
-        date: "May 16",
-        approved: 55,
-        pending: 25,
-        rejected: 11,
-    },
-    {
-        date: "May 17",
-        approved: 75,
-        pending: 18,
-        rejected: 8,
-    },
-    {
-        date: "May 18",
-        approved: 60,
-        pending: 26,
-        rejected: 12,
-    },
-    {
-        date: "May 19",
-        approved: 60,
-        pending: 26,
-        rejected: 12,
-    },
-    {
-        date: "May 20",
-        approved: 60,
-        pending: 26,
-        rejected: 12,
-    },
-    {
-        date: "May 21",
-        approved: 60,
-        pending: 26,
-        rejected: 12,
-    },
+export default function LeaveAnalyticsChart({ data = [] }) {
+    // If no dynamic data is loaded, fallback to basic mock representation
+    const chartData = data.length > 0 ? data.map(item => ({
+        date: item.date,
+        approved: item.leaves, // map date-wise count to approved leaves chart line
+        pending: Math.round(item.leaves * 0.3), // mock proportions for demonstration
+        rejected: Math.round(item.leaves * 0.1),
+    })) : [
+        { date: "Aug 01", approved: 2, pending: 1, rejected: 0 },
+        { date: "Aug 05", approved: 3, pending: 2, rejected: 1 },
+    ];
 
-];
-
-export default function LeaveAnalyticsChart() {
     return (
-        <Card className="border-none shadow-sm">
+        <Card className="border border-slate-100 shadow-sm bg-white">
             <CardHeader>
                 <CardTitle className="text-xl">
                     Leave Analytics
@@ -97,7 +44,7 @@ export default function LeaveAnalyticsChart() {
             <CardContent>
                 <ResponsiveContainer width="100%" height={340}>
                     <AreaChart
-                        data={data}
+                        data={chartData}
                         margin={{
                             top: 20,
                             right: 10,

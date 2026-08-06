@@ -3,14 +3,23 @@
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
-const DATA = [
-  { name: "Casual Leave", value: 12, percentage: "42.9%", color: "#10b981" },
-  { name: "Sick Leave", value: 7, percentage: "25.0%", color: "#3b82f6" },
-  { name: "Privilege Leave", value: 6, percentage: "21.4%", color: "#f59e0b" },
-  { name: "Work From Home", value: 3, percentage: "10.7%", color: "#a855f7" },
-];
+const COLOR_PALETTE = ["#10b981", "#3b82f6", "#f59e0b", "#a855f7", "#ec4899", "#6366f1"];
 
-export default function LeaveByTypeChart() {
+export default function LeaveByTypeChart({ data = [] }) {
+  // Map values and assign colors dynamically
+  const chartData = data.map((item, idx) => {
+    const total = data.reduce((acc, curr) => acc + curr.value, 0) || 1;
+    const percentage = ((item.value / total) * 100).toFixed(1) + "%";
+    return {
+      name: item.name,
+      value: item.value,
+      percentage,
+      color: COLOR_PALETTE[idx % COLOR_PALETTE.length],
+    };
+  });
+
+  const totalValue = data.reduce((acc, curr) => acc + curr.value, 0);
+
   return (
     <Card className="border-slate-100 shadow-sm bg-white">
       <CardHeader className="pb-2">
@@ -25,7 +34,7 @@ export default function LeaveByTypeChart() {
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
                 <Pie
-                  data={DATA}
+                  data={chartData}
                   cx="50%"
                   cy="50%"
                   innerRadius={45}
@@ -33,7 +42,7 @@ export default function LeaveByTypeChart() {
                   paddingAngle={2}
                   dataKey="value"
                 >
-                  {DATA.map((entry, index) => (
+                  {chartData.map((entry, index) => (
                     <Cell key={`cell-${index}`} fill={entry.color} />
                   ))}
                 </Pie>
@@ -42,14 +51,14 @@ export default function LeaveByTypeChart() {
             
             {/* Center Content for Total */}
             <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-              <span className="text-2xl font-bold text-slate-800">28</span>
+              <span className="text-2xl font-bold text-slate-800">{totalValue}</span>
               <span className="text-[10px] uppercase tracking-wider text-slate-400 font-medium">Total</span>
             </div>
           </div>
 
           {/* Custom Legend */}
           <div className="flex-1 w-full space-y-2.5">
-            {DATA.map((item, idx) => (
+            {chartData.map((item, idx) => (
               <div key={idx} className="flex items-start justify-between text-xs">
                 <div className="flex items-start gap-2 min-w-0">
                   <span
@@ -67,7 +76,7 @@ export default function LeaveByTypeChart() {
             ))}
             <div className="pt-2 border-t border-slate-100 flex justify-between items-center text-xs">
               <span className="font-semibold text-slate-800">Total:</span>
-              <span className="font-bold text-slate-800">28</span>
+              <span className="font-bold text-slate-800">{totalValue}</span>
             </div>
           </div>
         </div>
